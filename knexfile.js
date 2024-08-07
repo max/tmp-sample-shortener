@@ -5,5 +5,13 @@ module.exports = {
       filename: './dev.sqlite3'
     },
     useNullAsDefault: true
+  },
+  test: {
+    client: 'sqlite3',
+    connection: ':memory:',
+    useNullAsDefault: true,
+    migrations: {
+      directory: './migrations'
+    }
   }
 };

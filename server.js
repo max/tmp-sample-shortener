@@ -1,6 +1,6 @@
 const express = require('express');
 const { nanoid } = require('nanoid');
-const knex = require('knex')(require('./knexfile').development);
+const knex = require('knex');
 const path = require('path');
 const fs = require('fs');
 const marked = require('marked');
@@ -20,6 +20,14 @@ app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
+
+// Database setup
+let db;
+if (process.env.NODE_ENV === 'test') {
+  db = knex(require('./knexfile').test);
+} else {
+  db = knex(require('./knexfile').development);
+}
 
 // API root view
 app.get('/', (req, res) => {
@@ -66,39 +74,76 @@ app.post('/api', async (req, res) => {
 
   try {
     // Store the mapping in the database
-    await knex('urls').insert({
+    await db('urls').insert({
       short_id: shortId,
       original_url: url
     });
 
     // Construct the shortened URL
-    const shortenedUrl = `http://localhost:${port}/u/${shortId}`;
+    const shortUrl = `http://localhost:${port}/u/${shortId}`;
 
-    res.json({ shortenedUrl });
+    res.json({ shortUrl });
   } catch (error) {
     console.error('Error inserting URL:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Redirect endpoint
+// Redirect endpoint with analytics
 app.get('/u/:shortId', async (req, res) => {
   const { shortId } = req.params;
 
   try {
-    const url = await knex('urls').where({ short_id: shortId }).first();
+    const url = await db('urls').where({ short_id: shortId }).first();
 
     if (url) {
+      // Record visit analytics
+      await db('visits').insert({
+        url_id: url.id,
+        ip_address: req.ip,
+        user_agent: req.get('User-Agent'),
+        referrer: req.get('Referrer') || null
+      });
+
       res.redirect(url.original_url);
     } else {
       res.status(404).json({ error: 'URL not found' });
     }
   } catch (error) {
-    console.error('Error retrieving URL:', error);
+    console.error('Error retrieving URL or recording visit:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-app.listen(port, () => {
+// New endpoint to get analytics for a URL
+app.get('/api/analytics/:shortId', async (req, res) => {
+  const { shortId } = req.params;
+
+  try {
+    const url = await db('urls').where({ short_id: shortId }).first();
+
+    if (!url) {
+      return res.status(404).json({ error: 'URL not found' });
+    }
+
+    const visits = await db('visits')
+      .where({ url_id: url.id })
+      .select('ip_address', 'user_agent', 'referrer', 'visited_at');
+
+    res.json({
+      shortId,
+      originalUrl: url.original_url,
+      totalVisits: visits.length,
+      visits
+    });
+  } catch (error) {
+    console.error('Error retrieving analytics:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+const server = app.listen(port, () => {
   console.log(`URL shortener API listening at http://localhost:${port}`);
 });
+
+module.exports = { app, server, db };

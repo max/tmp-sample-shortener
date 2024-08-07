@@ -22,7 +22,7 @@ This is a URL shortener API written in Node.js. It provides functionality to sho
 
 ### Prerequisites
 
-- Node.js (versions 14.x, 16.x, or 18.x)
+- Node.js (versions 20.x or 22.x)
 - npm
 
 ### Setup
@@ -95,7 +95,7 @@ Replace `:shortId` with the ID of the shortened URL.
 
 ## CI/CD
 
-This project uses GitHub Actions for continuous integration. The CI pipeline runs on pushes to the main branch and on pull requests, testing the project on Node.js versions 14.x, 16.x, and 18.x.
+This project uses GitHub Actions for continuous integration. The CI pipeline runs on pushes to the main branch and on pull requests, testing the project on Node.js versions 20.x and 22.x.
 
 ## License
 

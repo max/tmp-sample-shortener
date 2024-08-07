@@ -1,0 +1,21 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "A simple URL shortener API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "migrate": "knex migrate:latest",
+    "build:css": "tailwindcss -i ./src/input.css -o ./public/output.css"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nanoid": "^3.1.20",
+    "sqlite3": "^5.0.2",
+    "knex": "^0.95.6",
+    "marked": "^4.0.16"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.2"
+  }
+}

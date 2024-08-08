@@ -3,37 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener API</title>
+    <title>URL Shortener API - Simplify Your Links</title>
     <link href="/output.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <header class="bg-blue-600 text-white p-6">
-        <h1 class="text-3xl font-bold">URL Shortener API</h1>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex flex-col font-sans">
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-6 px-4 sm:px-6 lg:px-8 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold tracking-tight">URL Shortener API</h1>
+            <nav>
+                <a href="#features" class="text-white hover:text-blue-200 transition duration-300 mr-4">Features</a>
+                <a href="#how-to-use" class="text-white hover:text-blue-200 transition duration-300">How to Use</a>
+            </nav>
+        </div>
     </header>
-    <main class="flex-grow container mx-auto px-4 py-8">
-        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="text-2xl font-semibold mb-4">Welcome to our URL Shortener API</h2>
-            <p class="mb-4">This API allows you to create short URLs and track visit statistics for your links.</p>
-            <h3 class="text-xl font-semibold mb-2">Key Features:</h3>
-            <ul class="list-disc list-inside mb-4">
-                <li>Shorten long URLs</li>
-                <li>Redirect short URLs to their original destinations</li>
-                <li>Track visit statistics for each short URL</li>
-            </ul>
+
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="text-center mb-16">
+            <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">Simplify Your Links</h2>
+            <p class="text-xl text-gray-600 mb-8">Create short, trackable URLs in seconds with our powerful API</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#how-to-use" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105">Get Started</a>
+                <a href="/api-docs" class="bg-white text-blue-600 hover:bg-blue-50 font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 border border-blue-600">View Docs</a>
+            </div>
         </section>
-        <section class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-2xl font-semibold mb-4">How to Use</h2>
-            <p class="mb-4">To create a short URL, send a POST request to <code class="bg-gray-200 px-2 py-1 rounded">/api/shorten</code> with a JSON body containing the original URL:</p>
-            <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+
+        <section id="features" class="mb-16" x-data="{ activeFeature: 'shorten' }">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Key Features</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div 
+                    class="bg-white rounded-lg shadow-md p-6 cursor-pointer transition duration-300 transform hover:scale-105"
+                    :class="{ 'ring-2 ring-blue-500': activeFeature === 'shorten' }"
+                    @click="activeFeature = 'shorten'"
+                >
+                    <svg class="w-12 h-12 text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    <h3 class="text-xl font-semibold mb-2">Shorten URLs</h3>
+                    <p class="text-gray-600">Transform long, complex URLs into short, memorable links.</p>
+                </div>
+                <div 
+                    class="bg-white rounded-lg shadow-md p-6 cursor-pointer transition duration-300 transform hover:scale-105"
+                    :class="{ 'ring-2 ring-blue-500': activeFeature === 'redirect' }"
+                    @click="activeFeature = 'redirect'"
+                >
+                    <svg class="w-12 h-12 text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <h3 class="text-xl font-semibold mb-2">Smart Redirects</h3>
+                    <p class="text-gray-600">Instantly redirect users to the original destination.</p>
+                </div>
+                <div 
+                    class="bg-white rounded-lg shadow-md p-6 cursor-pointer transition duration-300 transform hover:scale-105"
+                    :class="{ 'ring-2 ring-blue-500': activeFeature === 'track' }"
+                    @click="activeFeature = 'track'"
+                >
+                    <svg class="w-12 h-12 text-blue-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <h3 class="text-xl font-semibold mb-2">Visit Tracking</h3>
+                    <p class="text-gray-600">Monitor and analyze the performance of your short links.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-to-use" class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">How to Use</h2>
+            <p class="text-lg text-gray-600 mb-6">To create a short URL, send a POST request to <code class="bg-gray-100 text-blue-600 px-2 py-1 rounded font-mono">/api/shorten</code> with a JSON body containing the original URL:</p>
+            <pre class="bg-gray-800 text-white p-6 rounded-lg overflow-x-auto mb-6">
 {
     "url": "https://example.com/your-long-url"
 }
             </pre>
-            <p class="mt-4">For more detailed information, check out our <a href="/api-docs" class="text-blue-600 hover:underline">API documentation</a>.</p>
+            <p class="text-lg text-gray-600">For more detailed information and advanced usage, check out our <a href="/api-docs" class="text-blue-600 hover:underline font-semibold">comprehensive API documentation</a>.</p>
         </section>
     </main>
-    <footer class="bg-gray-800 text-white p-4 text-center">
-        <p>&copy; 2023 URL Shortener API. All rights reserved.</p>
+
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2023 URL Shortener API. All rights reserved.</p>
+            <nav class="mt-4 md:mt-0">
+                <a href="#" class="text-gray-300 hover:text-white mr-4">Privacy Policy</a>
+                <a href="#" class="text-gray-300 hover:text-white mr-4">Terms of Service</a>
+                <a href="#" class="text-gray-300 hover:text-white">Contact</a>
+            </nav>
+        </div>
     </footer>
 </body>
 </html>

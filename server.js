@@ -4,6 +4,7 @@ const knex = require('knex');
 const path = require('path');
 const fs = require('fs');
 const marked = require('marked');
+const ejs = require('ejs');
 
 const app = express();
 
@@ -14,6 +15,10 @@ const port = portArg ? parseInt(portArg.split('=')[1], 10) : 3000;
 
 app.use(express.json());
 app.use(express.static('public'));
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -31,6 +36,11 @@ if (process.env.NODE_ENV === 'test') {
 
 // API root view
 app.get('/', (req, res) => {
+  res.render('index');
+});
+
+// API documentation route
+app.get('/api-docs', (req, res) => {
   const docPath = path.join(__dirname, 'api-docs.md');
   fs.readFile(docPath, 'utf8', (err, data) => {
     if (err) {
@@ -38,26 +48,7 @@ app.get('/', (req, res) => {
       return res.status(500).send('Internal server error');
     }
     const htmlContent = marked.parse(data);
-    const html = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>URL Shortener API Documentation</title>
-        <link href="/output.css" rel="stylesheet">
-      </head>
-      <body class="bg-gray-100 text-gray-900 p-4">
-        <div class="container mx-auto max-w-3xl">
-          <h1 class="text-3xl font-bold mb-4">URL Shortener API Documentation</h1>
-          <div class="bg-white rounded-lg shadow-md p-6">
-            ${htmlContent}
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-    res.send(html);
+    res.render('api-docs', { htmlContent });
   });
 });
 

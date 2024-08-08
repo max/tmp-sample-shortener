@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener API</title>
+    <link href="/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white p-6">
+        <h1 class="text-3xl font-bold">URL Shortener API</h1>
+    </header>
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-2xl font-semibold mb-4">Welcome to our URL Shortener API</h2>
+            <p class="mb-4">This API allows you to create short URLs and track visit statistics for your links.</p>
+            <h3 class="text-xl font-semibold mb-2">Key Features:</h3>
+            <ul class="list-disc list-inside mb-4">
+                <li>Shorten long URLs</li>
+                <li>Redirect short URLs to their original destinations</li>
+                <li>Track visit statistics for each short URL</li>
+            </ul>
+        </section>
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">How to Use</h2>
+            <p class="mb-4">To create a short URL, send a POST request to <code class="bg-gray-200 px-2 py-1 rounded">/api/shorten</code> with a JSON body containing the original URL:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+{
+    "url": "https://example.com/your-long-url"
+}
+            </pre>
+            <p class="mt-4">For more detailed information, check out our <a href="/api-docs" class="text-blue-600 hover:underline">API documentation</a>.</p>
+        </section>
+    </main>
+    <footer class="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; 2023 URL Shortener API. All rights reserved.</p>
+    </footer>
+</body>
+</html>

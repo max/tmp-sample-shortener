@@ -4,21 +4,28 @@
   "description": "A simple URL shortener API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "migrate": "knex migrate:latest",
+    "build": "konk run s -n build:css -n start",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/output.css",
+    "dev": "konk run c -n dev:css -n dev:server",
+    "dev:css": "tailwindcss -i ./src/input.css -o ./public/output.css --watch",
+    "dev:server": "nodemon server.js",
+    "migrate": "knex migrate:latest",
+    "start": "node server.js",
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "express": "^4.17.1",
+    "knex": "^0.95.6",
+    "marked": "^4.0.16",
     "nanoid": "^3.1.20",
     "sqlite3": "^5.0.2",
-    "knex": "^0.95.6",
-    "marked": "^4.0.16"
+    "ejs": "^3.1.9"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.2",
     "jest": "^29.5.0",
-    "supertest": "^6.3.3"
+    "konk": "^0.29.2",
+    "nodemon": "^3.1.4",
+    "supertest": "^6.3.3",
+    "tailwindcss": "^3.3.2"
   }
 }

@@ -63,12 +63,15 @@
 
         <section id="how-to-use" class="bg-white rounded-lg shadow-lg p-8">
             <h2 class="text-3xl font-bold text-gray-900 mb-6">How to Use</h2>
-            <p class="text-lg text-gray-600 mb-6">To create a short URL, send a POST request to <code class="bg-gray-100 text-blue-600 px-2 py-1 rounded font-mono">/api/shorten</code> with a JSON body containing the original URL:</p>
+            <p class="text-lg text-gray-600 mb-6">To create a short URL, use the following curl command:</p>
             <pre class="bg-gray-800 text-white p-6 rounded-lg overflow-x-auto mb-6">
-{
-    "url": "https://example.com/your-long-url"
-}
-            </pre>
+curl -X POST http://localhost:3000/api/shorten \
+     -H "Content-Type: application/json" \
+     -d '{"url": "https://example.com/your-long-url"}'</pre>
+            <p class="text-lg text-gray-600 mb-4">This will return a JSON response with your shortened URL:</p>
+            <pre class="bg-gray-800 text-white p-6 rounded-lg overflow-x-auto mb-6">{
+    "shortUrl": "http://localhost:3000/abc123"
+}</pre>
             <p class="text-lg text-gray-600">For more detailed information and advanced usage, check out our <a href="/api-docs" class="text-blue-600 hover:underline font-semibold">comprehensive API documentation</a>.</p>
         </section>
     </main>
